@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSharpTutorial
 {
@@ -6,7 +7,21 @@ namespace CSharpTutorial
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Person person = new Person();
+
+            person.AskForFullName();
+            person.AskForAge();
+
+            person.AskForCarCompany();
+            person.AskForCarCompany();
+            person.AskForCarCompany();
+
+            person.ShowInformation();
+
+            Console.ReadLine();
         }
+
+        
+        
     }
 }
