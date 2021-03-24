@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CSharpTutorial.Entities;
+using CSharpTutorial.Entities.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CSharpTutorial
@@ -16,6 +19,20 @@ namespace CSharpTutorial
             CarList = new List<string>();
         }
 
+        public PersonEntity AskForUserName(TutorialContext tutorialContext)
+        {
+            Console.WriteLine("What is your name?");
+            string givenName = Console.ReadLine();
+
+            var foundPerson = tutorialContext.PersonEntity.FirstOrDefault(x => x.FullName == givenName);
+
+            FullName = foundPerson.FullName;
+            Age = foundPerson.Age;
+
+
+            return foundPerson;
+        }
+
         public void AskForFullName()
         {
             Console.WriteLine("What is your name?");
@@ -30,6 +47,36 @@ namespace CSharpTutorial
             var givenCar = Console.ReadLine();
 
             CarList.Add(givenCar);
+        }
+
+        public void SaveCarCompaniesInDatabase(TutorialContext tutorialContext, PersonEntity personEntity)
+        {
+            foreach(var carItem in CarList)
+            {
+                tutorialContext.CarCompany.Add(new CarCompany()
+                {
+                    CarID = Guid.NewGuid(),
+                    CarCompanyName = carItem,
+                    PersonEntityID = personEntity.PersonEntityID
+                });
+            }
+            tutorialContext.SaveChanges();
+        }
+               
+        public PersonEntity SavePersonInDatabase(TutorialContext tutorialContext)
+        {
+            var newPersonEntity = new Entities.Models.PersonEntity()
+            {
+                PersonEntityID = Guid.NewGuid(),
+                FullName = FullName,
+                Age = Age
+            };
+
+            tutorialContext.PersonEntity.Add(newPersonEntity);
+
+            tutorialContext.SaveChanges();
+
+            return newPersonEntity;
         }
 
         public void AskForAge()
